@@ -8,7 +8,6 @@ module RegFile
     input  [ADDR_SIZE-1:0] a1,
     input  [ADDR_SIZE-1:0] a2,
     input  [WIDTH-1:0]     wdata,
-    input  [ADDR_SIZE-1:0] waddr,
     input                  we,
     input                  clk,
     input                  rst,
@@ -32,14 +31,14 @@ always_comb begin
 end
 
 // WRITE BLOCK
-always_ff @(posedge clk or negedge rst) begin
+always_ff @(negedge clk or negedge rst) begin
     if (!rst) begin
         integer i;
         for (i = 0; i < DEPTH; i = i + 1) begin
             file[i] <= '0;
         end
     end else if (we) begin
-        file[waddr] <= wdata;
+        file[a2] <= wdata;
     end
 end
 

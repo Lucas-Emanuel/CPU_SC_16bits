@@ -37,6 +37,12 @@ module SingleCycle_Top import typedefs::*;
 	wire		end_routine;
 	wire [15:0] rtrn_addr;
 
+	wire        ier_set_flag;
+	wire        ier_unset_flag;
+	wire        ifr_set_flag;
+	wire        ifr_unset_flag;
+	wire        end_routine;
+
 	opcode_t           op;
 	wire               comp;
 	wire               sel_pc;    
@@ -67,19 +73,27 @@ module SingleCycle_Top import typedefs::*;
 		.alu_bypass(alu_bypass),
 		.alu_feedback_in(alu_feedback_in),
 		.mem_we(mem_we), 
-		.mem_bypass(mem_bypass)
+		.mem_bypass(mem_bypass),
+		.ier_set_flag,
+		.ier_unset_flag,
+		.ifr_set_flag,
+		.ifr_unset_flag,
+		.end_routine
 	);
 
 	// STILL NEED TO CONNECT THE INTERRUPTION SIGNALS
 	InterruptController int_cont (
 		.clk,
     	.rst,
-    	.ier_in(),
-    	.ifr_in(),
-		.end_routine(),
-    	.rtrn_addr_in(pc_out),
+    	.reg_addr(im_out[9:0]),
+		.ier_set_flag,
+		.ier_unset_flag,
+		.ifr_set_flag,
+		.ifr_unset_flag,
+		.end_routine,
+		.rtrn_addr_in(pc_out),
 		.enable(enable_interrupt),
-		.addr(int_addr)
+		.addr_out(int_addr)
 	);
 	
 	Mux2x1 feedback_mux(

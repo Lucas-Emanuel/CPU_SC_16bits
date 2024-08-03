@@ -1,7 +1,7 @@
 module CounterMem
 #(
-    parameter WIDTH = 16,
-    parameter NUM_EXC = 16
+    parameter  WIDTH = 16,
+    parameter  NUM_EXC = 16
     localparam ADDR_SIZE = $clog2(NUM_EXC)
 )
 (
@@ -25,7 +25,7 @@ generate;
     
     for (int i = 1 ; i < NUM_EXC ; ++i) begin
         always_comb begin
-            if((|excpt_en[i-1:0] == '0)) begin
+            if((|excpt_en[i-1:0] == '0) && (excpt_en[i] == '1)) begin
                 count <= ( (ADD_SIZE)'0 + (ADD_SIZE)'i ) 
             end
         end
